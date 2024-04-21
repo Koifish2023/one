@@ -1,0 +1,45 @@
+
+
+on join:
+	set {Glider.%player%} to false
+	
+on sneak toggle:
+	if lore of player's chestplate is "&8minecraft:Elytra":
+		if {Glider.%player%} is true:
+			set {Glider.%player%} to false
+		
+		else:
+			if block under player is air:
+				wait 1 tick
+				if player is sneaking:
+					set {Glider.%player%} to true
+					
+					loop 1000 times:
+						wait 4 ticks
+						if {Glider.%player%} is true:	
+							push player horizontally forward at speed 1.2
+							Chance of 50%:
+								push player upwards at speed 0.4
+								
+							if block under player is not air:
+								wait 1 second
+								set {Glider.%player%} to false
+						else:
+							stop
+	
+on damage:
+	if lore of victim's chestplate is "&8minecraft:Elytra":
+		damage cause is fall:
+			if {Glider.%victim%} is true:
+				cancel event
+				set {Glider.%victim%} to false
+				
+
+on load:
+
+	register new shaped recipe for 303 named "&fElytra" with lore "&8minecraft:Elytra" using 265, 336, 265, 336, 265, air, 265, air, air	
+		
+command /Elytra:
+	permission: Elytra.get
+	trigger:
+		give player 1 303 named "&fElytra" with lore "&8minecraft:Elytra"
